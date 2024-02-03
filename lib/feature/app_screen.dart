@@ -53,13 +53,13 @@ class WeatherCard extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6)
+                color: Colors.black.withOpacity(0.45)
             ),
           ),
           
           Column(
             children: [
-              const Gap(40),
+              const Gap(45),
               buildLocation(),
 
               const Gap(40),
@@ -67,12 +67,20 @@ class WeatherCard extends StatelessWidget {
 
               const Gap(40),
               buildCurrentWeatherTemp(),
+
+              const Gap(40),
+              buildOtherWeatherConditions(),
+
+              const Gap(20),
+              buildOtherDaysWeather()
             ],
           )
         ],
       ),
     );
   }
+
+
 
   Widget buildLocation() {
     return Container(
@@ -104,13 +112,103 @@ class WeatherCard extends StatelessWidget {
   }
 
   Widget buildCurrentWeatherTemp() {
-    return  Column(
+    return  const Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Icon(Icons.sunny, color: Colors.white,),
         Text('Clear', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w400),),
-        Text('40℃', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold   ),),
+        Text('40 ℃', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.w700   ),),
       ],
     );
   }
+
+  Widget buildOtherWeatherConditions(){
+    return  Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        buildWeatherCondition(icon: Icons.water_drop_outlined, title: 'HUMIDITY', reading: '40%'),
+        buildWeatherCondition(icon: Icons.air_rounded, title: 'WIND', reading: '4.63km/h'),
+        buildWeatherCondition(icon: Icons.thermostat_outlined, title: 'FEELS LIKE', reading: '22°'),
+      ],
+    );
+  }
+
+  Widget buildOtherDaysWeather() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 200,
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+            color: Colors.black.withOpacity(0.3)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            buildDayWeatherInfo(
+                date: 'Wed 15',
+                icon: Icons.thunderstorm_rounded,
+                temp: '22°',
+                wind: '1.5'
+            ),
+
+            buildDayWeatherInfo(
+                date: 'Thu 16',
+                icon: Icons.cloudy_snowing,
+                temp: '22°',
+                wind: '1.5'
+            ),
+
+            buildDayWeatherInfo(
+                date: 'Fri 17',
+                icon: Icons.sunny_snowing,
+                temp: '22°',
+                wind: '1.5'
+            ),
+
+            buildDayWeatherInfo(
+                date: 'Sat 18',
+                icon: Icons.sunny,
+                temp: '22°',
+                wind: '1.5'
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildWeatherCondition({IconData? icon, String? title, String? reading }) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(icon, color: Colors.white, size: 45,),
+          Text(title!, style: const TextStyle(color: Colors.white, fontSize: 12),),
+          Text(reading!, style: const TextStyle(color: Colors.white, fontSize: 11,),),
+        ],
+      );
+  }
+
+  Widget buildDayWeatherInfo({IconData? icon, String? date, String? temp, String? wind}){
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(date!, style: const TextStyle(color: Colors.white, fontSize: 16),),
+        const Gap(10),
+        Icon(icon, color: Colors.white, size: 55,),
+        const Gap(5),
+        Text(temp!, style: const TextStyle(color: Colors.white, fontSize: 18,),),
+        const Gap(10),
+        Column(
+          children: [
+            Text(wind!, style: const TextStyle(color: Colors.white, fontSize: 15),),
+            Text('km/h', style: const TextStyle(color: Colors.white, fontSize: 15),),
+          ],
+        ),
+      ],
+    );
+  }
+
+
 }
