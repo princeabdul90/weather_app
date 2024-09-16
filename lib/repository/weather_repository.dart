@@ -7,6 +7,7 @@
 import 'package:weather/api/models/models.dart';
 import 'package:weather/api/weather_api.dart';
 import 'package:weather/domain_model/domain_model.dart';
+import 'package:weather/repository/mappers/remote_to_domain.dart';
 
 class WeatherRepository {
 
@@ -16,20 +17,18 @@ class WeatherRepository {
 
   final WeatherApi remoteApi;
 
-  // todo: change the return remote model to domain model
-  Future<WeatherRM?> getWeather({String? city}) async {
+  Future<WeatherForecast?> getWeather({String? city}) async {
     try {
       final geoCoding = await remoteApi.getDirectGeocoding(city: city);
-      print('DirectGeocoding: $geoCoding');
 
       final tempWeather = await remoteApi.getCityWeatherInfo(geoCoding);
-      print('TempWeather: $tempWeather');
 
-      final WeatherRM weather = tempWeather!.copyWith(name: geoCoding.name, country: geoCoding.country);
+      /// final WeatherForecastRM weather = tempWeather!.copyWith(name: geoCoding.name, country: geoCoding.country);
+      final  weather = tempWeather!.toDomain();
 
       return weather;
     }catch (error){
-      if(error  is WeatherErrorException){
+      if(error  is WeatherErrorRemoteException){
         throw WeatherErrorException();
       }
       rethrow;
