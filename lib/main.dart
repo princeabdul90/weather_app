@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/api/weather_api.dart';
 import 'package:weather/feature/app_screen.dart';
 import 'package:weather/repository/weather_repository.dart';
@@ -20,27 +21,30 @@ class _MyAppState extends State<MyApp> {
   late final _weatherRepository = WeatherRepository(remoteApi: _weatherApi);
 
 
-@override
+  @override
   void initState() {
     super.initState();
-    _fetchWeather();
+    //_fetchWeather();
   }
 
-  _fetchWeather(){
+  _fetchWeather() {
     _weatherRepository.getWeather(city: 'cebu');
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Beautiful Weather App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return RepositoryProvider.value(
+      value: _weatherRepository,
+      child: MaterialApp(
+        title: 'Beautiful Weather App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const AppScreen(),
       ),
-      home: const AppScreen(),
     );
   }
 }
