@@ -1,7 +1,6 @@
 /*
 * Developer: Abubakar Abdullahi
 * Date: 2/3/2024
-* Company: ESAT PILIPINAS TEKNIK, OPC
 */
 
 
@@ -20,14 +19,17 @@ class GeocodingRM {
     this.country,
   });
 
-  factory GeocodingRM.fromJson(Map<String, dynamic> json) => GeocodingRM(
-    name: json["name"],
-    localNames: json["local_names"] == null ? null : LocalNames.fromJson(json["local_names"]),
-    lat: json["lat"]?.toDouble(),
-    lon: json["lon"]?.toDouble(),
-    country: json["country"],
-  );
-
+  factory GeocodingRM.fromJson(List<dynamic> json) {
+    //final Map<String, dynamic> data = json[0];
+    final Map data = json[0];
+    return GeocodingRM(
+      name: data["name"],
+      localNames: data["local_names"] == null ? null : LocalNames.fromJson(data["local_names"]),
+      lat: data["lat"]?.toDouble(),
+      lon: data["lon"]?.toDouble(),
+      country: data["country"],
+    );
+  }
 }
 
 class LocalNames {
@@ -36,7 +38,6 @@ class LocalNames {
 
   LocalNames({
     this.en,
-
   });
 
   factory LocalNames.fromJson(Map<String, dynamic> json) => LocalNames(
