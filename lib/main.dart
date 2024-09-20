@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/api/weather_api.dart';
-import 'package:weather/feature/app_screen.dart';
 import 'package:weather/repository/weather_repository.dart';
+
+import 'feature/feature.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,9 +28,10 @@ class _MyAppState extends State<MyApp> {
     //_fetchWeather();
   }
 
-  _fetchWeather() {
-    _weatherRepository.getWeather(city: 'cebu');
-  }
+  // _fetchWeather() {
+  //   _weatherRepository.getWeather();
+  //   //_weatherApi.getDirectGeocoding(city: '');
+  // }
 
   // This widget is the root of your application.
   @override
@@ -44,6 +46,7 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         home: const AppScreen(),
+        //home: const SavedLocationsScreen(),
       ),
     );
   }
