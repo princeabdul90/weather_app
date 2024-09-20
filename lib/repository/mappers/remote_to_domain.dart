@@ -6,16 +6,15 @@
 import 'package:weather/api/models/models.dart';
 import 'package:weather/domain_model/domain_model.dart';
 
-extension WeatherForecastRMtoDomain on WeatherForecastRM {
-  WeatherForecast toDomain(){
-    return WeatherForecast(
-      cod: cod,
-      message: message,
-      cnt: cnt,
-      city: city!.toDomain(),
-      list: list!.map((ls) => ls.toDomain()).toList()
-    );
-  }
+WeatherForecast mapRemoteToDomainModel (WeatherForecastRM weather, GeocodingRM geo) {
+  return WeatherForecast(
+      cod: weather.cod,
+      message: weather.message,
+      cnt: weather.cnt,
+      city: weather.city!.toDomain(),
+      list: weather.list!.map((ls) => ls.toDomain()).toList(),
+      cityName: geo.name,
+  );
 }
 
 extension WeatherListRMtoDomain on WeatherListRM {

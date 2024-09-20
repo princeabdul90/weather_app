@@ -18,8 +18,8 @@ class WeatherForecastBloc
 
   void _getWeatherForecast(
       SearchCityForecastEvent event, Emitter<WeatherForecastState> emit) async {
+    emit(state.copyWith(status: Status.loading));
     try {
-      emit(state.copyWith(status: Status.loading));
       final data = await weatherRepository.getWeather(city: event.city);
 
       final dateFormatter = DateFormat('yyyy-MM-dd');
@@ -60,7 +60,9 @@ class WeatherForecastBloc
           day2: day2List,
           day3: day3List,
           day4: day4List,
-          day5: day5List));
+          day5: day5List,
+        cityName: data.cityName
+      ));
       // print("Weather State: $state\n");
     } catch (error) {
       if (error is WeatherErrorException) {

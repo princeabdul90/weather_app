@@ -22,9 +22,13 @@ class GeoCodingUrlBuilder {
 
   const GeoCodingUrlBuilder({
     String? baseUrl,
-  }) : _baseUrl = baseUrl ?? 'https://api.openweathermap.org/geo/1.0/direct';
+  }) : _baseUrl = baseUrl ?? 'https://api.openweathermap.org/geo/1.0';
 
-  String buildCityCoordinate({String? city, String? apiKey}) {
-    return '$_baseUrl?q=$city&limit=1&appid=$apiKey';
+  String buildGetCoordinateByCityName({String? city, String? apiKey}) {
+    return '$_baseUrl/direct?q=$city&limit=1&appid=$apiKey';
+  }
+
+  String buildGetCityNameByCoordinate({double? lat, double? long, String? apiKey}){
+    return '$_baseUrl/reverse?lat=$lat&lon=$long&limit=1&appid=$apiKey';
   }
 }

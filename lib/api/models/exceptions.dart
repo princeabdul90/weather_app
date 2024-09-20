@@ -6,3 +6,9 @@ class GeocodeRemoteException implements Exception {}
 class EmptyWeatherDataException implements Exception {}
 
 class WeatherErrorRemoteException implements Exception {}
+
+class EnableServiceException implements Exception {}
+
+class GrantPermissionException implements Exception {}
+
+class ForeverGrantPermissionException implements Exception {}

@@ -23,14 +23,21 @@ class WeatherApi {
   final GeoCodingUrlBuilder _geoCodeUrlBuilder;
   final UrlBuilder _urlBuilder;
 
-  Future<GeocodingRM> getDirectGeocoding({String? city}) async {
+  Future<GeocodingRM> getDirectGeocoding({String? city}) {
     const appId = String.fromEnvironment(_apiKey);
-    final url = _geoCodeUrlBuilder.buildCityCoordinate(city: city, apiKey: appId);
+    final url = _geoCodeUrlBuilder.buildGetCoordinateByCityName(city: city, apiKey: appId);
+    return _getGeocoding(url);
+  }
 
-    // todo: check device location city if city input is null
+  Future<GeocodingRM> getReverseGeocoding({double? lat, double? long}) {
+    const appId = String.fromEnvironment(_apiKey);
+    final url = _geoCodeUrlBuilder.buildGetCityNameByCoordinate(lat: lat, long: long, apiKey: appId);
+    return _getGeocoding(url);
+  }
 
+  Future<GeocodingRM> _getGeocoding(url) async {
     try{
-      final response = await _dio.get(url, );
+    final   response = await _dio.get(url, );
       final jsonObject = response.data;
       final coordinate = GeocodingRM.fromJson(jsonObject);
       return coordinate;

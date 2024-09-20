@@ -12,6 +12,7 @@ class WeatherForecast extends Equatable {
   final int? cnt;
   final List<WeatherList>? list;
   final City? city;
+  final String? cityName;
 
   const WeatherForecast({
     this.cod,
@@ -19,10 +20,11 @@ class WeatherForecast extends Equatable {
     this.cnt,
     this.list,
     this.city,
+    this.cityName
   });
 
   @override
-  List<Object?> get props => [cod, message, cnt, list, city];
+  List<Object?> get props => [cod, message, cnt, list, city, cityName];
 }
 
 class City extends Equatable {
