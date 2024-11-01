@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:weather/domain_model/domain_model.dart';
 import 'package:weather/feature/widgets/loading_overlay.dart';
+import 'package:weather/models/models.dart';
 import 'package:weather/repository/weather_repository.dart';
 
 import 'bloc/weather_forecast_bloc.dart';
@@ -75,7 +75,7 @@ class WeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    //final size = MediaQuery.of(context).size;
 
     return BlocConsumer<WeatherForecastBloc, WeatherForecastState>(
       listener: (context, state) {
@@ -153,7 +153,7 @@ class WeatherCard extends StatelessWidget {
     );
   }
 
-  Widget buildDate({WeatherList? day1}) {
+  Widget buildDate({WeatherListRM? day1}) {
     return  Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -177,7 +177,7 @@ class WeatherCard extends StatelessWidget {
     );
   }
 
-  Widget buildCurrentWeatherTemp({WeatherList? data}) {
+  Widget buildCurrentWeatherTemp({WeatherListRM? data}) {
     return  Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -208,7 +208,7 @@ class WeatherCard extends StatelessWidget {
     );
   }
 
-  Widget buildOtherWeatherConditions({WeatherList? data}) {
+  Widget buildOtherWeatherConditions({WeatherListRM? data}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -224,7 +224,7 @@ class WeatherCard extends StatelessWidget {
     );
   }
 
-  Widget buildOtherDaysWeather({WeatherList? day2, WeatherList? day3, WeatherList? day4, WeatherList? day5}) {
+  Widget buildOtherDaysWeather({WeatherListRM? day2, WeatherListRM? day3, WeatherListRM? day4, WeatherListRM? day5}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
