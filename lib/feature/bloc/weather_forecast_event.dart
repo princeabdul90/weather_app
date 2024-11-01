@@ -13,4 +13,18 @@ class SearchCityForecastEvent extends WeatherForecastEvent {
   const SearchCityForecastEvent({
     required this.city,
   });
+
+  @override
+  List<Object> get props => [city];
+}
+
+class InvalidateCacheEvent extends WeatherForecastEvent {
+  final String city;
+
+  const InvalidateCacheEvent({
+    required this.city,
+  });
+
+  @override
+  List<Object> get props => [city];
 }

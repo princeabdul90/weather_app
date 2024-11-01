@@ -4,11 +4,11 @@ enum Status { initial, loading, success, error }
 
 class WeatherForecastState extends Equatable {
   final Status status;
-  final WeatherList? day1;
-  final WeatherList? day2;
-  final WeatherList? day3;
-  final WeatherList? day4;
-  final WeatherList? day5;
+  final WeatherListRM? day1;
+  final WeatherListRM? day2;
+  final WeatherListRM? day3;
+  final WeatherListRM? day4;
+  final WeatherListRM? day5;
   final String? cityName;
   final String? errorMsg;
 
@@ -31,11 +31,11 @@ class WeatherForecastState extends Equatable {
 
   WeatherForecastState copyWith({
     Status? status,
-    final WeatherList? day1,
-    final WeatherList? day2,
-    final WeatherList? day3,
-    final WeatherList? day4,
-    final WeatherList? day5,
+    final WeatherListRM? day1,
+    final WeatherListRM? day2,
+    final WeatherListRM? day3,
+    final WeatherListRM? day4,
+    final WeatherListRM? day5,
     final String? cityName,
     String? errorMsg
   }) {
