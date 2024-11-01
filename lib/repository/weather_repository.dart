@@ -3,21 +3,57 @@
 * Date: 2/3/2024
 * */
 
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather/api/models/models.dart';
 import 'package:weather/api/weather_api.dart';
+import 'package:weather/cache_config/cache_config.dart';
 import 'package:weather/domain_model/domain_model.dart';
-import 'package:weather/repository/mappers/remote_to_domain.dart';
+import 'package:weather/models/models.dart';
+import 'package:weather/repository/mappers/cache_to_domain.dart';
+import 'package:weather/repository/mappers/remote_to_cache.dart';
+import 'package:weather/repository/weather_local_storage.dart';
+
 
 class WeatherRepository {
 
-  const WeatherRepository({
+   WeatherRepository( {
     required this.remoteApi,
-  });
+    required CacheConfig cacheConfig,
+     @visibleForTesting WeatherLocalStorage? localStorage,
+  }): _localStorage = localStorage ?? WeatherLocalStorage(cacheConfig: cacheConfig);
 
   final WeatherApi remoteApi;
+  final WeatherLocalStorage _localStorage;
 
-  Future<WeatherForecast?> getWeather({String? city}) async {
+
+  final Duration cacheDuration = const Duration(minutes: 10);
+
+  // Stream controller for broadcasting data
+   final StreamController<WeatherForecastRM> _weatherStreamController = StreamController.broadcast();
+  // Expose stream of weather data
+  Stream<WeatherForecastRM> get weatherStream => _weatherStreamController.stream;
+
+
+   // Fetch weather data from API or cache
+   Future<void> getWeather({String? city}) async {
+    var cacheKey = 'weather_$city';
+    final cachedData = await _localStorage.getCacheWeatherData(cacheKey);
+
+    // Check cache validity
+    if (cachedData != null) {
+      final DateTime cacheTime = DateTime.parse(cachedData.timestamp!);
+
+      if (DateTime.now().difference(cacheTime) < cacheDuration) {
+
+        _weatherStreamController.add(cachedData.toDomain()); // Use cached data
+        return;
+      } else {
+        _localStorage.deleteCacheData(cacheKey); // Cache expired, delete it
+      }
+    }
     try {
 
       if(city == null || city == ''){
@@ -32,7 +68,6 @@ class WeatherRepository {
           // accessing the position and request users of the
           // App to enable the location services.
           //return Future.error('Location services are disabled.');
-          print("Enable Location: ${serviceEnabled}");
           throw EnableServiceException();
         }
 
@@ -46,39 +81,32 @@ class WeatherRepository {
             // returned true. According to Android guidelines
             // your App should show an explanatory UI now.
             //return Future.error('Location permissions are denied');
-            print("Permission: ${permission}");
             throw GrantPermissionException();
           }
         }
 
         if (permission == LocationPermission.deniedForever) {
           // Permissions are denied forever, handle appropriately.
-          print("Permission: ${permission}");
           throw ForeverGrantPermissionException();
           // return Future.error(
           //     'Location permissions are permanently denied, we cannot request permissions.');
         }
 
         locationData = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        final geocoding = GeocodingRM(lat: locationData.latitude, lon: locationData.longitude);
-        final tempWeather = await remoteApi.getCityWeatherInfo(geocoding);
 
-        final city = await remoteApi.getReverseGeocoding(lat: locationData.latitude, long: locationData.longitude);
-        // print("City: ${city.name}, Local Name: ${city.localNames!.en}, Lat: ${city.lat}, Long: ${city.lon}");
-        // print("Lat: ${locationData.latitude}, Long: ${locationData.longitude}");
+        final tempWeather = await remoteApi.getCityWeatherInfo(lat: locationData.latitude, long: locationData.longitude);
 
-        /// final WeatherForecastRM weather = tempWeather!.copyWith(name: geoCoding.name, country: geoCoding.country);
-        //final  weather = tempWeather!.toDomain();
-        final  weather = mapRemoteToDomainModel(tempWeather!, city);
-        return weather;
+        _localStorage.upsertWeatherData(cacheKey, tempWeather!.toCacheModel());
+
+        _weatherStreamController.add(tempWeather);
       }
 
-      final geoCoding = await remoteApi.getDirectGeocoding(city: city);
-      final tempWeather = await remoteApi.getCityWeatherInfo(geoCoding);
+      final tempWeather = await remoteApi.getCityWeatherInfo(city: city);
 
-     //final  weather = tempWeather!.toDomain();
-      final  weather = mapRemoteToDomainModel(tempWeather!, geoCoding);
-      return weather;
+      _localStorage.upsertWeatherData(cacheKey, tempWeather!.toCacheModel());
+
+      _weatherStreamController.add(tempWeather);
+
     }catch (error){
       if(error  is WeatherErrorRemoteException){
         throw WeatherErrorException();
@@ -86,5 +114,20 @@ class WeatherRepository {
       rethrow;
     }
   }
+
+   // Invalidate cache for a specific city
+   void invalidateCache(String city) {
+     _localStorage.invalidateCache('weather_$city');
+   }
+
+   // Clear all cached weather data
+   void clearAllCache() {
+     _localStorage.clearWeatherData();
+   }
+
+   // Dispose the stream controller when no longer needed
+   void dispose() {
+     _weatherStreamController.close();
+   }
 
 }
