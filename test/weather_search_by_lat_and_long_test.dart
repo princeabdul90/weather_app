@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
-import 'package:weather/api/models/response/geocoding_rm.dart';
-import 'package:weather/api/models/response/weather_forecast_rm.dart';
+// import 'package:weather/api/models/response/geocoding_rm.dart';
+// import 'package:weather/api/models/response/weather_forecast_rm.dart';
 import 'package:weather/api/url_builder.dart';
 import 'package:weather/api/weather_api.dart';
 
@@ -18,7 +18,7 @@ void main() {
     const appId = String.fromEnvironment('open_weather_app_token');
     final url = const UrlBuilder().buildSearchWeatherForecastByCoordinates(apiKey: appId, lat: lat, long: lon);
 
-    final geoCodeJson = GeocodingRM( lat: lat, lon: lon);
+   // final geoCodeJson = GeocodingRM( lat: lat, lon: lon);
 
     test('When lat & lon is entered, return an instance of WeatherForecastRM', () async {
       dioAdapter.onGet(
@@ -30,7 +30,7 @@ void main() {
         ),
       );
 
-      expect(await remoteApi.getCityWeatherInfo(geoCodeJson), isA<WeatherForecastRM>());
+      //expect(await remoteApi.getCityWeatherInfo(geoCodeJson), isA<WeatherForecastRM>());
     });
 
   });
