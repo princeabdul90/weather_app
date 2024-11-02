@@ -5,7 +5,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather/api/url_builder.dart';
 import 'package:weather/models/models.dart';
 
@@ -22,15 +21,17 @@ class WeatherApi {
   final GeoCodingUrlBuilder _geoCodeUrlBuilder;
   final UrlBuilder _urlBuilder;
 
+  final appToken = const String.fromEnvironment('open_weather_app_token');
+
   Future<GeocodingRM> getDirectGeocoding({String? city}) {
-    var appId = dotenv.get('API_KEY');
-    final url = _geoCodeUrlBuilder.buildGetCoordinateByCityName(city: city, apiKey: appId);
+    //var appId = dotenv.get('API_KEY', fallback: 'null');
+    final url = _geoCodeUrlBuilder.buildGetCoordinateByCityName(city: city, apiKey: appToken);
     return _getGeocoding(url);
   }
 
   Future<GeocodingRM> getReverseGeocoding({double? lat, double? long}) {
-    var appId = dotenv.get('API_KEY');
-    final url = _geoCodeUrlBuilder.buildGetCityNameByCoordinate(lat: lat, long: long, apiKey: appId);
+    //var appId = dotenv.get('API_KEY', fallback: 'null');
+    final url = _geoCodeUrlBuilder.buildGetCityNameByCoordinate(lat: lat, long: long, apiKey: appToken);
     return _getGeocoding(url);
   }
 
@@ -46,11 +47,11 @@ class WeatherApi {
     }
 
 
-    var appId = dotenv.get('API_KEY');
+    //var appId = dotenv.get('API_KEY');
     final url = _urlBuilder.buildSearchWeatherForecastByCoordinates(
       lat: geocodingRM.lat,
       long: geocodingRM.lon,
-      apiKey: appId,
+      apiKey: appToken,
     );
 
     try {

@@ -1,18 +1,18 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather/api/weather_api.dart';
 import 'package:weather/repository/weather_repository.dart';
 
 import 'cache_config/cache_config.dart';
 import 'feature/feature.dart';
+import 'firebase_options.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
-
+  Firebase.initializeApp(options: DefaultFirebaseOptions.web);
 
   runApp(
       DevicePreview(

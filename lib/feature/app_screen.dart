@@ -21,7 +21,7 @@ class AppScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => WeatherForecastBloc(
         weatherRepository: context.read<WeatherRepository>(),
-      )..add( const SearchCityForecastEvent(city: '')),
+      )..add(DeviceCityForecastEvent()),
       child: Scaffold(
         body: Container(
           decoration: const BoxDecoration(

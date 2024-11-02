@@ -15,6 +15,7 @@ class WeatherForecastBloc
   WeatherForecastBloc({required this.weatherRepository})
       : super(WeatherForecastState.initial()) {
     on<SearchCityForecastEvent>(_onFetchWeather);
+    on<DeviceCityForecastEvent>(_onFetchDeviceWeather);
     on<InvalidateCacheEvent>(_onInvalidateCache);
 
     weatherRepository.weatherStream.listen(
@@ -80,6 +81,11 @@ class WeatherForecastBloc
   Future<void> _onFetchWeather(SearchCityForecastEvent event, Emitter<WeatherForecastState> emit) async {
     emit(state.copyWith(status: Status.loading));
     await weatherRepository.getWeather(city: event.city);
+  }
+
+  Future<void> _onFetchDeviceWeather(DeviceCityForecastEvent event, Emitter<WeatherForecastState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    await weatherRepository.getDeviceWeather();
   }
 
   /*

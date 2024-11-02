@@ -18,6 +18,8 @@ class SearchCityForecastEvent extends WeatherForecastEvent {
   List<Object> get props => [city];
 }
 
+class DeviceCityForecastEvent extends WeatherForecastEvent {}
+
 class InvalidateCacheEvent extends WeatherForecastEvent {
   final String city;
 
