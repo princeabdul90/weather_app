@@ -12,7 +12,6 @@ import 'package:weather/models/models.dart';
 import 'package:weather/repository/weather_repository.dart';
 
 import 'bloc/weather_forecast_bloc.dart';
-import 'feature.dart';
 
 class AppScreen extends StatelessWidget {
   const AppScreen({super.key});
@@ -39,26 +38,7 @@ class AppScreen extends StatelessWidget {
               ),
           ),
           child: WeatherCard(),
-        )
-
-        /*
-        Center(
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              WeatherCard(
-                imageString: 'asset/burj-khalifah.jpg',
-              ),
-              WeatherCard(
-                imageString: 'asset/great-wall-of-china.jpg',
-              ),
-              WeatherCard(
-                imageString: 'asset/statue-of-liberty.jpg',
-              ),
-            ],
-          ),
         ),
-        */
       ),
     );
   }
@@ -75,7 +55,6 @@ class WeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final size = MediaQuery.of(context).size;
 
     return BlocConsumer<WeatherForecastBloc, WeatherForecastState>(
       listener: (context, state) {
@@ -88,14 +67,16 @@ class WeatherCard extends StatelessWidget {
       builder: (context, state) {
         return Stack(
           children: [
-            // Container(
-            //   decoration:
-            //       BoxDecoration(color: Colors.black.withOpacity(0.45)),
-            // ),
             if(state.status == Status.success)
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 30, right: 10, left: 10),
+                  height: 60,
+                  child: const SearchCity(),
+                ),
+
                 buildLocation(context, cityName: state.cityName),
 
                 buildDate(day1: state.day1),
@@ -115,7 +96,7 @@ class WeatherCard extends StatelessWidget {
 
   Widget buildLocation(BuildContext context, {String? cityName}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
       child:  Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -125,7 +106,7 @@ class WeatherCard extends StatelessWidget {
                 Icons.location_pin,
                 color: Colors.white,
               ),
-              Text('${cityName}',
+              Text('$cityName',
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -135,19 +116,19 @@ class WeatherCard extends StatelessWidget {
             ],
           ),
 
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SavedLocationsScreen(),
-                ),
-              );
-            },
-            child: const Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (context) => const SavedLocationsScreen(),
+          //       ),
+          //     );
+          //   },
+          //   child: const Icon(
+          //     Icons.menu,
+          //     color: Colors.white,
+          //   ),
+          // ),
         ],
       ),
     );
@@ -196,12 +177,12 @@ class WeatherCard extends StatelessWidget {
         ),
 
         Text(
-          '${data.main!.temp!.toStringAsFixed(0)} ℃',
+          '${data.main!.temp!.toStringAsFixed(2)} ℃',
           textAlign: TextAlign.center,
           style: const TextStyle(
               color: Colors.white,
-              fontSize: 86,
-              fontWeight: FontWeight.w500,
+              fontSize: 64,
+              fontWeight: FontWeight.bold,
               fontFamily: 'Roboto'),
         ),
       ],
@@ -326,6 +307,68 @@ class WeatherCard extends StatelessWidget {
             ),
           ],
         ),
+      ],
+    );
+  }
+}
+
+class SearchCity extends StatefulWidget {
+  const SearchCity({super.key});
+
+  @override
+  State<SearchCity> createState() => _SearchCityState();
+}
+
+class _SearchCityState extends State<SearchCity> {
+  final TextEditingController searchController = TextEditingController();
+
+  void onSearch(){
+    if(searchController.text.length > 2){
+      context.read<WeatherForecastBloc>().add(SearchCityForecastEvent(city: searchController.text));
+    }
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery
+        .of(context)
+        .size;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: size.width * 0.8,
+          child: TextField(
+            controller: searchController,
+            decoration: const InputDecoration(
+              hintText: 'Enter City Name',
+              hintStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  //fontWeight: FontWeight.w400,
+                  fontFamily: 'Poppins'),
+            ),
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                //fontWeight: FontWeight.w400,
+                fontFamily: 'Poppins'),
+          ),
+        ),
+        InkWell(
+          onTap: () => onSearch(),
+          child: const Icon(
+            Icons.search,
+            color: Colors.white,
+            size: 30,
+          ),
+        )
       ],
     );
   }
