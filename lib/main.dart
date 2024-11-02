@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive/hive.dart';
 import 'package:weather/api/weather_api.dart';
 import 'package:weather/repository/weather_repository.dart';
 
@@ -20,7 +17,7 @@ void main() async {
   runApp(
       DevicePreview(
         backgroundColor: Colors.white,
-        enabled: !kReleaseMode, // use web
+        //enabled: !kReleaseMode, // use web
         //enabled: !kDebugMode,  // use emulator
         availableLocales: const [Locale('en','US')],
         // Start with Galaxy A50 as it's a common Android device

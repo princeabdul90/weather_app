@@ -60,7 +60,7 @@ class WeatherForecastBloc
               day5: day5List,
               cityName: data.city!.name
           ));
-          print('state: ${day1List}');
+          //print('state: ${day1List}');
         },
       onError: (error) {
         if (error is WeatherErrorException) {
