@@ -1,0 +1,38 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "abubakar-porfolio",
+          "appId": "1:328099288356:android:ef2e495aba0b67d9234fb1",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "abubakar-porfolio",
+          "configurations": {
+            "android": "1:328099288356:android:ef2e495aba0b67d9234fb1",
+            "ios": "1:328099288356:ios:bb8970e69f870020234fb1",
+            "web": "1:328099288356:web:4b0f068f94875a05234fb1"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "site" : "weatherapp-90",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

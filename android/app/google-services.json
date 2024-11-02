@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "328099288356",
+    "project_id": "abubakar-porfolio",
+    "storage_bucket": "abubakar-porfolio.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328099288356:android:ef2e495aba0b67d9234fb1",
+        "android_client_info": {
+          "package_name": "com.example.weather"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsUyjok2FiaI6cMYXRXw_XRcfu04xF_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

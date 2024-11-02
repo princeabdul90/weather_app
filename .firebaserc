@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "abubakar-porfolio"
+  },
+  "targets": {
+    "abubakar-porfolio": {
+      "hosting": {
+        "app": [
+          "weatherapp-90"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
