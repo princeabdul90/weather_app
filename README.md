@@ -1,6 +1,6 @@
 # Multiple days Weather App
 
-A Professional Flutter Multiple days Weather App implementation using Dio, Hive, Repository pattern, and Bloc with:
+A Professional Multiple days Weather App implementation using Dio, Hive, Repository pattern, and Bloc with:
 
 *- Cache policy (managed within the repository to handle expiration and invalidation).*
 
